@@ -100,7 +100,7 @@ public class TicTacToe {
             System.out.println("X wins");
         } else if (hasPlayerWon('O')) {
             System.out.println("O wins");
-        } else if (isGameNotFinished()) {
+        } else if (hasUnfinishedGame()) {
             System.out.println("Game not finished");
         } else if (isGameDraw()) {
             System.out.println("Draw");
@@ -145,7 +145,7 @@ public class TicTacToe {
         return Math.abs(countX - countY);
     }
 
-    private static boolean isGameNotFinished() {
+    private static boolean hasUnfinishedGame() {
         return !hasPlayerWon('X') && !hasPlayerWon('O') && hasEmptyCell();
     }
 
