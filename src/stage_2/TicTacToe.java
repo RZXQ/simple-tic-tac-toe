@@ -3,35 +3,31 @@ package stage_2;
 import java.util.Scanner;
 
 public class TicTacToe {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
 
-	public static void main(String[] args) {
+        int index = 0;
 
-		Scanner scanner = new Scanner(System.in);
-		var str = scanner.nextLine();
+        char[][] board = new char[3][3];
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                board[row][col] = input.charAt(index++);
+            }
+        }
 
-		int pointer = 0;
+        printBoard(board);
+    }
 
-		char[][] arr = new char[3][3];
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				arr[i][j] = str.charAt(pointer++);
-			}
-		}
-
-		printArr(arr);
-	}
-
-	public static void printArr(char[][] arr) {
-		System.out.println("---------");
-		for (int i = 0; i < arr.length; i++) {
-			System.out.print("| ");
-			for (int j = 0; j < arr[i].length; j++) {
-				System.out.print(arr[i][j] + " ");
-			}
-			System.out.print("|");
-			System.out.println();
-		}
-		System.out.println("---------");
-	}
-
+    public static void printBoard(char[][] board) {
+        System.out.println("---------");
+        for (int row = 0; row < board.length; row++) {
+            System.out.print("| ");
+            for (int col = 0; col < board[row].length; col++) {
+                System.out.print(board[row][col] + " ");
+            }
+            System.out.println("|");
+        }
+        System.out.println("---------");
+    }
 }
