@@ -3,44 +3,44 @@ package stage_4;
 import java.util.Scanner;
 
 public class TicTacToe {
-    private static final Scanner scanner = new Scanner(System.in);
+    private static final Scanner SCANNER = new Scanner(System.in);
 
     private static char[][] board;
 
     public static void main(String[] args) {
         setupBoard();
         printBoard();
-        firstMove();
+        makeFirstMove();
         printBoard();
     }
 
-    private static void firstMove() {
+    private static void makeFirstMove() {
         String userInput;
 
         do {
-            userInput = scanner.nextLine();
-        } while (!checkValidInput(userInput));
+            userInput = SCANNER.nextLine();
+        } while (!isValidInput(userInput));
 
         String[] tokenArr = userInput.trim().split("\\s+");
         board[Integer.parseInt(tokenArr[0]) - 1][Integer.parseInt(tokenArr[1]) - 1] = 'X';
     }
 
-    private static boolean checkValidInput(String userInput) {
-        boolean flag = false;
+    private static boolean isValidInput(String userInput) {
+        boolean isValid = false;
 
         try {
-            validInput(userInput);
-            flag = true;
+            validateInput(userInput);
+            isValid = true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        return flag;
+        return isValid;
     }
 
-    private static void validInput(String userInput) throws Exception {
+    private static void validateInput(String userInput) throws Exception {
         String[] tokenArr = userInput.trim().split("\\s+");
-        if (tokenArr.length == 1) {
+        if (tokenArr.length != 2) {
             throw new InvalidInputException();
         }
 
@@ -53,16 +53,24 @@ public class TicTacToe {
             throw new InvalidInputException();
         }
 
-        if (row < 1 || row > 3 || col < 1 || col > 3) {
+        if (isOutOfBounds(row) || isOutOfBounds(col)) {
             throw new OutofBoundsException();
-        } else if (board[row - 1][col - 1] != '_') {
+        } else if (isCellOccupied(row, col)) {
             throw new OccupiedException();
         }
 
     }
 
+    private static boolean isOutOfBounds(int index) {
+        return index < 1 || index > 3;
+    }
+
+    private static boolean isCellOccupied(int row, int col) {
+        return board[row - 1][col - 1] != '_';
+    }
+
     private static void setupBoard() {
-        String input = scanner.nextLine();
+        String input = SCANNER.nextLine();
         board = new char[3][3];
 
         int index = 0;
@@ -124,12 +132,12 @@ public class TicTacToe {
         int countX = 0;
         int countY = 0;
 
-        for (var chars : board) {
-            for (char aChar : chars) {
-                if (aChar == 'X') {
+        for (var row : board) {
+            for (char cell : row) {
+                if (cell == 'X') {
                     countX++;
                 }
-                if (aChar == 'O') {
+                if (cell == 'O') {
                     countY++;
                 }
             }
