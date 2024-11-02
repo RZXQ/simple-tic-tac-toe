@@ -6,19 +6,17 @@ public class TicTacToe {
     private static char[][] board;
 
     public static void main(String[] args) {
-        createBoard();
+        setupBoard();
         printBoard();
-        checkStatus();
+        checkGameStatus();
     }
 
-
-    private static void createBoard() {
+    private static void setupBoard() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
+        board = new char[3][3];
 
         int index = 0;
-
-        board = new char[3][3];
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 board[row][col] = input.charAt(index++);
@@ -38,31 +36,42 @@ public class TicTacToe {
         System.out.println("---------");
     }
 
-    private static void checkStatus() {
-        if (isImpossible()) {
-
+    private static void checkGameStatus() {
+        if (isGameImpossible()) {
             System.out.println("Impossible");
-        } else if (hasWon('X')) {
+        } else if (hasPlayerWon('X')) {
             System.out.println("X wins");
-        } else if (hasWon('O')) {
+        } else if (hasPlayerWon('O')) {
             System.out.println("O wins");
-
-        } else if (notFinish()) {
+        } else if (isGameNotFinished()) {
             System.out.println("Game not finished");
-        } else if (isDraw()) {
+        } else if (isGameDraw()) {
             System.out.println("Draw");
         }
     }
 
-    private static boolean hasWon(char ch) {
-        return threeCharsOnRowOrColumn(ch) || threeCharsOnDiagnosis(ch);
+    private static boolean isGameImpossible() {
+        return hasPlayerWon('X') && hasPlayerWon('O') || (getPlayerMoveDifference() >= 2);
     }
 
-    private static boolean isImpossible() {
-        return hasWon('X') && hasWon('O') || (checkDifferences() >= 2);
+    private static boolean hasPlayerWon(char ch) {
+        return hasThreeInARowOrColumn(ch) || hasThreeInADiagonal(ch);
     }
 
-    private static int checkDifferences() {
+    private static boolean hasThreeInARowOrColumn(char ch) {
+        for (int i = 0; i < board.length; i++) {
+            if (board[i][0] == ch && board[i][1] == ch && board[i][2] == ch || board[0][i] == ch && board[1][i] == ch && board[2][i] == ch) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasThreeInADiagonal(char ch) {
+        return board[0][0] == ch && board[1][1] == ch && board[2][2] == ch || board[2][0] == ch && board[1][1] == ch && board[0][2] == ch;
+    }
+
+    private static int getPlayerMoveDifference() {
         int countX = 0;
         int countY = 0;
 
@@ -79,25 +88,12 @@ public class TicTacToe {
         return Math.abs(countX - countY);
     }
 
-    private static boolean notFinish() {
-        return !hasWon('X') && !hasWon('O') && hasEmptyCell();
+    private static boolean isGameNotFinished() {
+        return !hasPlayerWon('X') && !hasPlayerWon('O') && hasEmptyCell();
     }
 
-    private static boolean isDraw() {
-        return !(threeCharsOnDiagnosis('X') || threeCharsOnDiagnosis('O') || hasEmptyCell());
-    }
-
-    private static boolean threeCharsOnRowOrColumn(char ch) {
-        for (int i = 0; i < board.length; i++) {
-            if (board[i][0] == ch && board[i][1] == ch && board[i][2] == ch || board[0][i] == ch && board[1][i] == ch && board[2][i] == ch) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean threeCharsOnDiagnosis(char ch) {
-        return board[0][0] == ch && board[1][1] == ch && board[2][2] == ch || board[2][0] == ch && board[1][1] == ch && board[0][2] == ch;
+    private static boolean isGameDraw() {
+        return !(hasThreeInADiagonal('X') || hasThreeInADiagonal('O') || hasEmptyCell());
     }
 
     private static boolean hasEmptyCell() {
