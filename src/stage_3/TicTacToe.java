@@ -24,7 +24,7 @@ public class TicTacToe {
         }
     }
 
-    public static void printBoard() {
+    private static void printBoard() {
         System.out.println("---------");
         for (char[] chars : board) {
             System.out.print("| ");
@@ -34,5 +34,35 @@ public class TicTacToe {
             System.out.println("|");
         }
         System.out.println("---------");
+    }
+
+    private static boolean checkWin(char ch) {
+        return (threeCharsOnRowOrColumn(ch) || threeCharsOnDiagnosis(ch));
+    }
+
+    private static boolean threeCharsOnRowOrColumn(char ch) {
+        for (int i = 0; i < board.length; i++) {
+            if (board[i][0] == ch && board[i][1] == ch && board[i][2] == ch || board[0][i] == ch && board[1][i] == ch && board[2][i] == ch) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean threeCharsOnDiagnosis(char ch) {
+        return board[0][0] == ch && board[1][1] == ch && board[2][2] == ch || board[2][0] == ch && board[1][1] == ch && board[0][2] == ch;
+    }
+
+    private static boolean hasEmptyCell() {
+        boolean hasEmptyCell = false;
+        for (var chars : board) {
+            for (var aChar : chars) {
+                if ('_' == aChar) {
+                    hasEmptyCell = true;
+                    return hasEmptyCell;
+                }
+            }
+        }
+        return hasEmptyCell;
     }
 }
